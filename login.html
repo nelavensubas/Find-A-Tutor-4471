@@ -1,0 +1,154 @@
+<html>
+    <head>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+
+    </head>
+    <body>
+        <form action="action_page.php" style="border:1px solid #ccc">
+            <div class="container">
+              <h1>Log In</h1>
+              <p>Please fill in this form to create an account.</p>
+              <hr>
+          
+              <label for="email"><b>Email</b></label>
+              <input type="text" id="email" placeholder="Enter Email" name="email" required>
+          
+              <label for="psw"><b>Password</b></label>
+              <input type="password" id="psw" placeholder="Enter Password" name="psw" required>
+          
+          
+          
+              <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
+          
+              <div class="clearfix">
+                <button type="button" id="loginBtn" class="loginbtn">Login</button>
+                
+              </div>
+            </div>
+          </form>
+          <br>
+                   
+          <h1>Sign Up</h1>
+          
+          <p>Select Account Type</p>
+          <select id="accountType" onchange="displayAccount()">
+               <option selected disabled>Select Account Type</option>
+               <option value="Tutor">Tutor</option>
+               <option value="Student">Student</option>
+          </select>
+        
+          
+          <p>Name:</p> 
+          <input  id="name" type="text" placeholder="Name">
+               
+          <p>E-Mail:</p> 
+          <input  id="emailSignUp" type="text" placeholder="E-Mail">
+          
+          <p>Password:</p> 
+          <input id="passwordSignUp" type="password" placeholder="Password">
+          
+          
+<!-- 
+TO DO:
+Need to add inputs that dynamically change dependant on what user selects; tutor or studnet
+Student:
+- Grade
+
+Tutor:
+- Subjects
+
+
+-->
+          
+          <br><br><button type="button" id="signUpBtn">Sign Up</button>
+     
+
+
+
+
+
+            <!-- Insert this script at the bottom of the HTML, but before you use any Firebase services -->
+            <script type="module">
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+          
+            // Your web app's Firebase configuration
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+            import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js'
+            const firebaseConfig = {
+              apiKey: "AIzaSyBH8Y73aYPtoBQMvUBw96kMf7PrIv5qjgc",
+              authDomain: "ubertutor-e5e4f.firebaseapp.com",
+              projectId: "ubertutor-e5e4f",
+              storageBucket: "ubertutor-e5e4f.appspot.com",
+              messagingSenderId: "625667723331",
+              appId: "1:625667723331:web:302648fd2ff6c56b0a04f6",
+              measurementId: "G-62554VZ1V0"
+            };
+          
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            //const auth = getAuth(app);
+            import {signInWithEmailAndPassword, createUserWithEmailAndPassword, getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js"
+            const auth = getAuth();
+
+            import {getDatabase, set, get, update, remove, ref, child} from "https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js"
+
+            document.getElementById("signUpBtn").addEventListener("click", signUp);
+
+            function signUp() {
+
+                    const emailSignUp = document.getElementById("emailSignUp").value;
+                    const passSignUp = document.getElementById("passwordSignUp").value;
+
+                    const accountType = document.getElementById("accountType").value;
+                    const name = document.getElementById("name").value;
+                    const db = getDatabase();
+                
+                    createUserWithEmailAndPassword(auth, emailSignUp, passSignUp).catch(function(error) {
+                        if (error) {
+                            alert(error.message);
+                        }
+                    }).then(function() {
+                        window.location = 'dashboard.html'; //After successful login, user will be redirected to home.html
+                    });
+                    
+                    set(ref(db, "Users/"+name), {
+                            accounttype: accountType,
+                            name: name,
+                            email: emailSignUp
+                        })
+
+                    }
+
+
+            
+            
+            document.getElementById("loginBtn").addEventListener("click", login);
+
+            function login() {
+                    const email = document.getElementById("email").value;
+                    const pass = document.getElementById("psw").value;
+                
+                    signInWithEmailAndPassword(auth, email, pass).catch(function(error) {
+                        if (error) {
+                            alert(error.message);
+                        } 
+                    }).then(function() {
+                        window.location = 'dashboard.html'; //After successful login, user will be redirected to home.html
+                    });
+
+
+                    }
+
+            
+        
+
+          </script>
+          
+
+
+
+    </body>
+</html>
