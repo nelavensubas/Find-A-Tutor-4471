@@ -172,7 +172,7 @@ Tutor:
             function login() {
                     const email = document.getElementById("email").value;
                     const pass = document.getElementById("psw").value;
-                    const db = getDatabase();
+                    const dbref = ref(getDatabase());
                 
                     signInWithEmailAndPassword(auth, email, pass).catch(function(error) {
                         if (error) {
@@ -180,10 +180,25 @@ Tutor:
                         } 
                     }).then(function() {
                         
-                        get(child(db, "Users/")).then((snapshot)=> {
+                        get(child(dbref, "Users/")).then((snapshot)=> {
                             if (snapshot.exists()) {
-                                console.log(snapshot.val().email)
+                                //for (var i = 0; i < (snapshot.val()).legnth; i++){
+                                    //console.log(snapshot.val().length())
+                                //}
+                            
+                                snapshot.forEach((child) => {
+                                    if (email == child.val().email && child.val().accounttype == "Tutor") {
+                                        window.location = 'dashboard.html';
+                                        //console.log("Go to tutor dash");
+                                    } else if (email == child.val().email && child.val().accounttype == "Student") {
+                                        window.location = 'studentdashboard.html';
+                                        //console.log("Go to student dash");
+                                    }
+                                });
+                            
                             }
+                        }).catch((error)=> {
+                            alert(error);
                         })
 
 
