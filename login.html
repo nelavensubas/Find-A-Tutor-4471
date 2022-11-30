@@ -142,7 +142,7 @@ Tutor:
                     });
                     const accountVal = document.getElementById("accountType").value;
                     if (accountType=="Tutor") {
-                        set(ref(db, "Users/Tutor/"+name), {
+                        set(ref(db, "Users/"+name), {
                             accounttype: accountType,
                             name: name,
                             rate: rate,
@@ -152,7 +152,7 @@ Tutor:
                         })
                     }
                     else if (accountType=="Student") {
-                        set(ref(db, "Users/Student/"+name), {
+                        set(ref(db, "Users/"+name), {
                             accounttype: accountType,
                             name: name,
                             grade: grade,
@@ -172,13 +172,22 @@ Tutor:
             function login() {
                     const email = document.getElementById("email").value;
                     const pass = document.getElementById("psw").value;
+                    const db = getDatabase();
                 
                     signInWithEmailAndPassword(auth, email, pass).catch(function(error) {
                         if (error) {
                             alert(error.message);
                         } 
                     }).then(function() {
-                        window.location = 'dashboard.html'; //After successful login, user will be redirected to home.html
+                        
+                        get(child(db, "Users/")).then((snapshot)=> {
+                            if (snapshot.exists()) {
+                                console.log(snapshot.val().email)
+                            }
+                        })
+
+
+                        //window.location = 'dashboard.html'; //After successful login, user will be redirected to home.html
                     });
 
 
