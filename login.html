@@ -33,7 +33,7 @@
           <h1>Sign Up</h1>
           
           <p>Select Account Type</p>
-          <select id="accountType" onchange="displayAccount()">
+          <select id="accountType">
                <option selected disabled>Select Account Type</option>
                <option value="Tutor">Tutor</option>
                <option value="Student">Student</option>
@@ -42,6 +42,24 @@
           
           <p>Name:</p> 
           <input  id="name" type="text" placeholder="Name">
+
+          <div id="ratediv" style="display:none;">
+            <p>Rate ($):</p> 
+            <input  id="rate" type="text" placeholder="Rate ($)">
+          </div>
+
+          <div id="skilldiv" style="display:none;">
+            <p>Skills (enter all skills comma separated):</p> 
+            <input  id="skills" type="text" placeholder="Skills ex: python,java,algebra">
+          </div>
+
+          <div id="gradediv" style="display:none;">
+            <p>Grade:</p> 
+            <input  id="grade" type="number" placeholder="Grade" min="1" max="12">
+          </div>
+
+          <p>Phone Number:</p> 
+          <input  id="number" type="text" placeholder="Name">
                
           <p>E-Mail:</p> 
           <input  id="emailSignUp" type="text" placeholder="E-Mail">
@@ -104,6 +122,11 @@ Tutor:
 
                     const accountType = document.getElementById("accountType").value;
                     const name = document.getElementById("name").value;
+                    const rate = document.getElementById("rate").value;
+                    const number = document.getElementById("number").value;
+                    const skills = document.getElementById("skills").value;
+                    const grade = document.getElementById("grade").value;
+
                     const db = getDatabase();
                 
                     createUserWithEmailAndPassword(auth, emailSignUp, passSignUp).catch(function(error) {
@@ -111,14 +134,33 @@ Tutor:
                             alert(error.message);
                         }
                     }).then(function() {
-                        window.location = 'dashboard.html'; //After successful login, user will be redirected to home.html
+                        if (accountType=="Tutor") {
+                            window.location = 'dashboard.html'; //After successful login, user will be redirected to home.html
+                        } else if (accountType=="Student") {
+                            window.location = 'studentdashboard.html'; //After successful login, user will be redirected to home.html
+                        }
                     });
-                    
-                    set(ref(db, "Users/"+name), {
+                    const accountVal = document.getElementById("accountType").value;
+                    if (accountType=="Tutor") {
+                        set(ref(db, "Users/Tutor/"+name), {
                             accounttype: accountType,
                             name: name,
+                            rate: rate,
+                            skills: skills,
+                            phonenumber: number,
                             email: emailSignUp
                         })
+                    }
+                    else if (accountType=="Student") {
+                        set(ref(db, "Users/Student/"+name), {
+                            accounttype: accountType,
+                            name: name,
+                            grade: grade,
+                            phonenumber: number,
+                            email: emailSignUp
+                        })
+                    }
+
 
                     }
 
@@ -142,6 +184,22 @@ Tutor:
 
                     }
 
+            document.getElementById("accountType").addEventListener("change", displayAccount);
+            
+            function displayAccount(){
+                const accountVal = document.getElementById("accountType").value;
+                if (accountVal == "Tutor"){
+                    document.getElementById("ratediv").style.display = "block";
+                    document.getElementById("gradediv").style.display = "none";
+                    document.getElementById("skilldiv").style.display = "block";
+
+                }
+                else if (accountVal == "Student"){
+                    document.getElementById("ratediv").style.display = "none";
+                    document.getElementById("gradediv").style.display = "block";
+                    document.getElementById("skilldiv").style.display = "none";
+                }
+            }
             
         
 
