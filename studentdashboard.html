@@ -1,47 +1,51 @@
 <html>
-    <head>
-        <h1>STUDENT DASHBAORD</h1>
-    </head>
-    <body>
-        <section class="contact-section">
-            <div class="row">
-                <h2 class="contact-heading">Ask a Question</h2>
+
+<head>
+    <h1>STUDENT DASHBAORD</h1>
+    <style>
+        #contactinfo1 {
+            margin: 0;
+            padding: 0;
+        }
+        #contactinfo2 {
+            margin: 0;
+            padding: 0;
+        }
+        #contactinfo3 {
+            margin: 0;
+            padding: 0;
+        }
+        #contactinfo4 {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="contact-section">
+        <div class="row">
+            <h2 class="contact-heading">Ask a Question</h2>
+        </div>
+        <form method="post" action="#">
+            <div>
+                <input type="text" name="contactName" id="contactName" placeholder="Contact Name" required>
             </div>
-                <form method="post" action="#">
-
-                        <div >
-                            <input type="text" name="contactName" id="contactName" placeholder="Contact Name" required>
-                        </div>
-
-                        <div >
-                            <input type="text" name="contactNumber" id="contactNumber" placeholder="Contact Number" required>
-                        </div>
-
-
-                        <div>
-                            <textarea name="question" id="question" placeholder="Ask Question Here"></textarea>
-                        </div>
-
-
-                        <div >
-                            <br><br><button type="button" id="askBtn">Ask</button>
-                        </div>
-
-        
-                </form>
-        
-        </section>
-        <br>
-        <br>
-        <hr>
-        <h3>Below here will contact cards of all the appropriate tutors for the question will pop up</h3>
-
-        <script type="module">
-            // TODO: Add SDKs for Firebase products that you want to use
-            // https://firebase.google.com/docs/web/setup#available-libraries
-          
-            // Your web app's Firebase configuration
-            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+            <div>
+                <input type="text" name="contactNumber" id="contactNumber" placeholder="Contact Number" required>
+            </div>
+            <div>
+                <textarea name="question" id="question" placeholder="Ask Question Here"></textarea>
+            </div>
+            <div>
+                <br><br><button type="button" id="askBtn">Ask</button>
+            </div>
+        </form>
+    </section>
+    <br><br>
+    <hr>
+    <h3 id="contactTitle">Below here will contact cards of all the appropriate tutors for the question will pop up</h3>
+    <script type="module">
             import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js'
             const firebaseConfig = {
               apiKey: "AIzaSyBH8Y73aYPtoBQMvUBw96kMf7PrIv5qjgc",
@@ -53,45 +57,54 @@
               measurementId: "G-62554VZ1V0"
             };
           
-            // Initialize Firebase
             const app = initializeApp(firebaseConfig);
-            //const auth = getAuth(app);
             import {signInWithEmailAndPassword, createUserWithEmailAndPassword, getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js"
             const auth = getAuth();
 
-            import {getDatabase, set, get, update, remove, ref, child} from "https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js"
+            import {getDatabase, set, get, update, remove, ref, child, onValue} from "https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js"
 
-            const question = document.getElementById("question").value;
             const db = getDatabase();
             document.getElementById("askBtn").addEventListener("click", sendQuestion);
 
+            const dbref = ref(getDatabase());
             function sendQuestion() {
-
-                
-                set(ref(db, "Questions/"+document.getElementById("contactName").value), {
-                            contactName: document.getElementById("contactName").value,
-                            contactNumber: document.getElementById("contactNumber").value,
-                            question: document.getElementById("question").value
-                        })
-                        
+                removeOldPTags("contactInfo1");
+                removeOldPTags("contactInfo2");
+                removeOldPTags("contactInfo3");
+                removeOldPTags("contactInfo4");
+                const question = document.getElementById("question").value.toString().split(' ');
+                get(child(dbref, "Users/")).then((snapshot)=> {
+                    if (snapshot.exists()) {
+                        snapshot.forEach((child)=> {
+                            if (child.val().accounttype == "Tutor") {
+                                const skills = child.val().skills.toString().split(',');
+                                for (let i = 0; i < question.length; i++) { 
+                                    const word = question[i].replace(/[\W_]+/g," ").trim();
+                                    console.log(word);
+                                    if (skills.includes(word)) {
+                                        document.getElementById('contactTitle').insertAdjacentHTML('afterend', '<br>');
+                                        document.getElementById('contactTitle').insertAdjacentHTML('afterend', '<p id="contactInfo1">Rate: ' + child.val().rate + '</p>');
+                                        document.getElementById('contactTitle').insertAdjacentHTML('afterend', '<p id="contactInfo2">Phone Number: ' + child.val().phonenumber + '</p>');
+                                        document.getElementById('contactTitle').insertAdjacentHTML('afterend', '<p id="contactInfo3">Email: ' + child.val().email + '</p>');
+                                        document.getElementById('contactTitle').insertAdjacentHTML('afterend', '<p id="contactInfo4">Name: ' + child.val().name + '</p>');
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }).catch((error)=> {
+                    alert(error);
+                })
             }
-
-          
-        
-
+            function removeOldPTags(element) {
+                var contactInfoIdsRemoval = document.getElementById(element);
+                if (contactInfoIdsRemoval != null) {
+                    contactInfoIdsRemoval.parentNode.removeChild(contactInfoIdsRemoval);
+                }
+            }
           </script>
+</body>
 
-
-
-
-
-
-
-
-
-
-
-    </body>
 </html>
 <!--
 TODO:
@@ -99,6 +112,4 @@ TODO:
 - Sign out button and functionality
 - SEARCH ALGORITHM: parse question and look for key words that match in the DB undere tutor users "skills" value
 - CSS -> Make this whole thing look prettier
-
-
 -->
