@@ -80,7 +80,6 @@
                                 const skills = child.val().skills.toString().split(',');
                                 for (let i = 0; i < question.length; i++) { 
                                     const word = question[i].replace(/[\W_]+/g," ").trim();
-                                    console.log(word);
                                     if (skills.includes(word)) {
                                         document.getElementById('contactTitle').insertAdjacentHTML('afterend', '<br>');
                                         document.getElementById('contactTitle').insertAdjacentHTML('afterend', '<p id="contactInfo1">Rate: ' + child.val().rate + '</p>');
