@@ -1,48 +1,72 @@
 <html>
 
 <head>
-    <h1>STUDENT DASHBAORD</h1>
+    <script src="https://kit.fontawesome.com/7223de008f.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="vendors/css/fluid.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/style.css">
+    
     <style>
-        #contactinfo1 {
-            margin: 0;
-            padding: 0;
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 20px;
+        cursor: pointer;
         }
-        #contactinfo2 {
-            margin: 0;
-            padding: 0;
-        }
-        #contactinfo3 {
-            margin: 0;
-            padding: 0;
-        }
-        #contactinfo4 {
-            margin: 0;
-            padding: 0;
-        }
-    </style>
+    .button4 {background-color: #e7e7e7; color: black;}
+    body {
+         background-image: url('https://images.pexels.com/photos/743986/pexels-photo-743986.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+         background-size: 130% 130%;
+}
+</style>
+    <h1>STUDENT DASHBAORD</h1>
+
 </head>
 
 <body>
     <section class="contact-section">
-        <div class="row">
-            <h2 class="contact-heading">Ask a Question</h2>
-        </div>
-        <form method="post" action="#">
-            <div>
-                <input type="text" name="contactName" id="contactName" placeholder="Contact Name" required>
+    <div class="row">
+        <h2 class="contact-heading">Contact us Here</h2>
+    </div>
+    <div class="row">
+        <form method="post" action="#" class="contact form">
+            <div class="row">
+                <div class="col span_1_of_3">
+                    <label>Name</label>
+                </div>
+                <div class="col span_2_of_3">
+                    <input type="text" name="name" id="name" placeholder="Your Name" required>
+                </div>
             </div>
-            <div>
-                <input type="text" name="contactNumber" id="contactNumber" placeholder="Contact Number" required>
+            <div class="row">
+                <div class="col span_1_of_3">
+                    <label>Email</label>
+                </div>
+                <div class="col span_2_of_3">
+                    <input type="email" name="email" id="email" placeholder="Your Email" required>
+                </div>
             </div>
-            <div>
-                <textarea name="question" id="question" placeholder="Ask Question Here"></textarea>
+            <div class="row">
+                <div class="col span_1_of_3">
+                    <label>Ask below</label>
+                </div>
+                <div class="col span_2_of_3">
+                    <textarea name="message" id="message" placeholder="message"></textarea>
+                </div>
+                            <div>
+                <br><br><button type="button" class="button button4" id="askBtn" >Ask</button>
             </div>
-            <div>
-                <br><br><button type="button" id="askBtn">Ask</button>
             </div>
         </form>
-    </section>
-    <br><br>
+    </div>
+</section>    
+<br><br>
     <hr>
     <h3 id="contactTitle">Below here will contact cards of all the appropriate tutors for the question will pop up</h3>
     <script type="module">
