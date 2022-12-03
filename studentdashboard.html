@@ -96,7 +96,7 @@
                 removeOldPTags("contactInfo2");
                 removeOldPTags("contactInfo3");
                 removeOldPTags("contactInfo4");
-                const question = document.getElementById("question").value.toString().split(' ');
+                const question = document.getElementById("message").value.toString().split(' ');
                 get(child(dbref, "Users/")).then((snapshot)=> {
                     if (snapshot.exists()) {
                         snapshot.forEach((child)=> {
