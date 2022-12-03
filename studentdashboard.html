@@ -20,9 +20,37 @@
         cursor: pointer;
         }
     .button4 {background-color: #e7e7e7; color: black;}
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        width: 40%;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+
+    .container {
+        padding: 2px 16px;
+
+    }
+    .flex-container {
+        display: flex;
+        background-color: DodgerBlue;
+    }
+
+    .flex-container > div {
+        background-color: #f1f1f1;
+        margin: 10px;
+        padding: 20px;
+        font-size: 30px;
+        background-color:rgba(255, 255, 255, 0.5)
+
+    }
     body {
          background-image: url('https://images.pexels.com/photos/743986/pexels-photo-743986.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
-         background-size: 130% 130%;
+         background-size: 150% 150%;
+         
 }
 </style>
     <h1>STUDENT DASHBAORD</h1>
@@ -68,7 +96,7 @@
 </section>    
 <br><br>
     <hr>
-    <h3 id="contactTitle">Below here will contact cards of all the appropriate tutors for the question will pop up</h3>
+    <h3 id="contactTitle">Here are the available tutors</h3>
     <script type="module">
             import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js'
             const firebaseConfig = {
@@ -106,10 +134,13 @@
                                     const word = question[i].replace(/[\W_]+/g," ").trim();
                                     if (skills.includes(word)) {
                                         document.getElementById('contactTitle').insertAdjacentHTML('afterend', '<br>');
+                                        document.getElementById('contactTitle').insertAdjacentHTML('afterend', '<div class="card container flex-container ">');
                                         document.getElementById('contactTitle').insertAdjacentHTML('afterend', '<p id="contactInfo1">Rate: ' + child.val().rate + '</p>');
                                         document.getElementById('contactTitle').insertAdjacentHTML('afterend', '<p id="contactInfo2">Phone Number: ' + child.val().phonenumber + '</p>');
                                         document.getElementById('contactTitle').insertAdjacentHTML('afterend', '<p id="contactInfo3">Email: ' + child.val().email + '</p>');
-                                        document.getElementById('contactTitle').insertAdjacentHTML('afterend', '<p id="contactInfo4">Name: ' + child.val().name + '</p>');
+                                        document.getElementById('contactTitle').insertAdjacentHTML('afterend', '<b><p id="contactInfo4">Name: ' + child.val().name + '</p></b>');
+                                        document.getElementById('contactTitle').insertAdjacentHTML('afterend', '</div></div>');
+
                                     }
                                 }
                             }
@@ -129,10 +160,3 @@
 </body>
 
 </html>
-<!--
-TODO:
-- [DONE] Need to do a login redirect- tutors needs to be directed to tutor dashboard - students to student dashboard
-- Sign out button and functionality
-- SEARCH ALGORITHM: parse question and look for key words that match in the DB undere tutor users "skills" value
-- CSS -> Make this whole thing look prettier
--->
